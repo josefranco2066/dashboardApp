@@ -6,7 +6,6 @@ import dash_table
 from dash.dependencies import Input, Output, State
 import dash_bootstrap_components as dbc
 
-import sqlite3
 import pandas as pd
 
 from app import app
@@ -38,10 +37,9 @@ def render_content(tab):
      , Input('Horas', 'value')
      , Input('my-date-picker-range', 'start_date')
      , Input('my-date-picker-range', 'end_date')
-     , Input('interval-component', 'n_intervals')
      , Input('Sitios', 'value')
      , Input('Registros', 'value')])
-def update_table(page_current, page_size, horas, fechaInicio, fechaFin, h, sitios, registros):
+def update_table(page_current, page_size, horas, fechaInicio, fechaFin, sitios, registros):
     dff1 = transforms.update()
     page = page_current
     size = page_size

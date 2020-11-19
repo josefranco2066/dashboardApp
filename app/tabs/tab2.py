@@ -9,7 +9,7 @@ import dash_table
 from app import app
 from database import transforms
 
-df = transforms.df1
+df = transforms.update()
 
 layout = html.Div(
             id='table-paging-with-graph-container',
@@ -21,7 +21,7 @@ layout = html.Div(
     [Input('Horas', 'value'),
     Input('Sitios', 'value')])
 def update_graph(horas,columns):
-    dff1 = df
+    dff1 = transforms.update()
 
     low = horas[0]
     high = horas[1]

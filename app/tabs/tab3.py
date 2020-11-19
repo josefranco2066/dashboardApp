@@ -7,7 +7,7 @@ import pandas as pd
 from app import app 
 from database import transforms
 
-df = transforms.df1
+df = transforms.update()
 
 layout = html.Div(
             id='bar-promedio',
@@ -18,7 +18,7 @@ layout = html.Div(
     [Input('Horas', 'value'),
     Input('Sitios', 'value')])
 def update_figure(horas,columns):
-    dff1 = df
+    dff1 = transforms.update()
 
     low = horas[0]
     high = horas[1]

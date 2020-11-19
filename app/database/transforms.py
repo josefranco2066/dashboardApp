@@ -53,11 +53,7 @@ df1['Año'] = df1.apply(Anho, axis=1)
 df1 = df1[['Año','Mes','Dia','Minuto','Fecha','Hora','Terminal1','Terminal2','Terminal3','Terminal4','Terminal5','Terminal6']]
 df1 = df1.sort_values(by=['Fecha'])
 
-def update():    
-    # doc_ref = db.collection('Registros').document(u'11-19-2020 00:00')
-    # doc_ref.update({
-    #     'Terminal1':15
-    # })
+def update():  
     docs = doc_ref.stream()
     fire={}
     for doc in docs:

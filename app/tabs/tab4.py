@@ -36,7 +36,7 @@ estilos.extend([{'if': {
             'color': 'black'} for n,i in enumerate(columnas)])
 
 PAGE_SIZE = 50
-layout = html.Div([
+layout = html.Div(
     dash_table.DataTable(
         id='table-sorting-filtering',
         tooltip_data=[{
@@ -62,10 +62,5 @@ layout = html.Div([
 
         sort_action='native',
         sort_mode='multi'
-    ),
-    dcc.Interval(
-            id='interval-component',
-            interval=1*1000, # in milliseconds
-            n_intervals=0
-        )
-])
+    )
+)
