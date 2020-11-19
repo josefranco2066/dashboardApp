@@ -3,7 +3,7 @@ import plotly
 import dash_core_components as dcc
 import dash_html_components as html 
 import dash_table
-from dash.dependencies import Input, Output
+from dash.dependencies import Input, Output, State
 import dash_bootstrap_components as dbc
 
 import sqlite3
@@ -14,8 +14,8 @@ from tabs import sidepanel, tab2, tab3, tab4, navbar
 from database import transforms
 from datetime import date
 
-columnas = ['Terminal 1', 'Terminal 2', 'Terminal 3',
-            'Terminal 4', 'Terminal 5', 'Terminal 6']
+columnas = ['Terminal1', 'Terminal2', 'Terminal3',
+            'Terminal4', 'Terminal5', 'Terminal6']
 
 app.layout = html.Div([navbar.Navbar(), sidepanel.layout])
 
@@ -29,37 +29,20 @@ def render_content(tab):
     elif tab == 'tab-4':
        return tab4.layout
 
-@app.callback(
-    Output('table-sorting-filtering', "columns"),
-    [Input('Sitios', 'value'),
-    Input('Registros', 'value'),
-    ])
-def update_columns(sitios, registros):
-    dff1 = transforms.df1
-    # Puntos filtro
-    newColumns=[]
-    newColumns.extend([{'name': i, 'id': i, 'deletable': False} for i in registros])
-    if len(sitios)==0:
-        for i in columnas:
-            newColumns.append({'name': i, 'id': i, 'deletable': False})
-        newColumns.append({'name': 'Fecha', 'id': 'Fecha', 'deletable': False})
-        return newColumns
-    else:
-        for i in sitios:
-            newColumns.append({'name': i, 'id': i, 'deletable': False})
-        newColumns.append({'name': 'Fecha', 'id': 'Fecha', 'deletable': False})
-        return newColumns
 
-@app.callback(
+@app.callback([
     Output('table-sorting-filtering', 'data')
+    , Output('table-sorting-filtering', "columns")]
     , [Input('table-sorting-filtering', "page_current")
      , Input('table-sorting-filtering', "page_size")
      , Input('Horas', 'value')
      , Input('my-date-picker-range', 'start_date')
      , Input('my-date-picker-range', 'end_date')
-     ])
-def update_table(page_current, page_size, horas, fechaInicio, fechaFin):
-    dff1 = transforms.df1
+     , Input('interval-component', 'n_intervals')
+     , Input('Sitios', 'value')
+     , Input('Registros', 'value')])
+def update_table(page_current, page_size, horas, fechaInicio, fechaFin, h, sitios, registros):
+    dff1 = transforms.update()
     page = page_current
     size = page_size
 
@@ -77,7 +60,18 @@ def update_table(page_current, page_size, horas, fechaInicio, fechaFin):
 
     dff1 = dff1.loc[(dff1['Hora'] >= low) & (dff1['Hora'] <= high)]
 
-    return dff1.iloc[page * size: (page + 1) * size].to_dict('records')
+    newColumns=[]
+    newColumns.extend([{'name': i, 'id': i, 'deletable': False} for i in registros])
+    if len(sitios)==0:
+        for i in columnas:
+            newColumns.append({'name': i, 'id': i, 'deletable': False})
+        newColumns.append({'name': 'Fecha', 'id': 'Fecha', 'deletable': False})
+    else:
+        for i in sitios:
+            newColumns.append({'name': i, 'id': i, 'deletable': False})
+        newColumns.append({'name': 'Fecha', 'id': 'Fecha', 'deletable': False})
+
+    return [dff1.iloc[page * size: (page + 1) * size].to_dict('records'),newColumns]
 
 if __name__ == '__main__':
-    app.run_server(debug = True, host = '0.0.0.0', port = 8050)
+    app.run_server(host = '0.0.0.0')

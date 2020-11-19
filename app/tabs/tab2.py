@@ -29,7 +29,7 @@ def update_graph(horas,columns):
     dff1 = dff1.loc[(dff1['Hora'] >= low) & (dff1['Hora'] <= high)]
     fig = go.Figure()
     if len(columns) == 0:
-        columns=['Terminal 1', 'Terminal 2', 'Terminal 3','Terminal 4', 'Terminal 5', 'Terminal 6']
+        columns=['Terminal1', 'Terminal2', 'Terminal3','Terminal4', 'Terminal5', 'Terminal6']
     for c in columns:
         fig.add_trace(go.Scatter(x = dff1['Fecha']
                             , y = dff1[c]
@@ -45,7 +45,6 @@ def update_graph(horas,columns):
     fig.update_layout(title='Ica vs tiempo',
                    xaxis_title='Fecha',
                    yaxis_title='ICA')
-    print(fig)
     return html.Div([
         dcc.Graph(
             id='rating-price'

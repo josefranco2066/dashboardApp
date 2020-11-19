@@ -12,8 +12,8 @@ from database import transforms
 
 df = transforms.df1
 
-columnas=['Terminal 1', 'Terminal 2', 'Terminal 3','Terminal 4', 'Terminal 5', 'Terminal 6']
-campos=['{Terminal 1}', '{Terminal 2}', '{Terminal 3}','{Terminal 4}', '{Terminal 5}', '{Terminal 6}']
+columnas=['Terminal1', 'Terminal2', 'Terminal3','Terminal4', 'Terminal5', 'Terminal6']
+campos=['{Terminal1}', '{Terminal2}', '{Terminal3}','{Terminal4}', '{Terminal5}', '{Terminal6}']
 
 estilos=[]
 estilos.extend([{'if': {
@@ -36,16 +36,16 @@ estilos.extend([{'if': {
             'color': 'black'} for n,i in enumerate(columnas)])
 
 PAGE_SIZE = 50
-layout = html.Div(
+layout = html.Div([
     dash_table.DataTable(
         id='table-sorting-filtering',
         tooltip_data=[{
-            'Terminal 1':{'value': 'Terminal 1 \n\n Fecha: {} \n\n Hora: {}:{}'.format(row['Fecha'],row['Hora'],row['Minuto']), 'type': 'markdown'},
-            'Terminal 2':{'value': 'Terminal 2 \n\n Fecha: {} \n\n Hora: {}:{}'.format(row['Fecha'],row['Hora'],row['Minuto']), 'type': 'markdown'},
-            'Terminal 3':{'value': 'Terminal 3 \n\n Fecha: {} \n\n Hora: {}:{}'.format(row['Fecha'],row['Hora'],row['Minuto']), 'type': 'markdown'},
-            'Terminal 4':{'value': 'Terminal 4 \n\n Fecha: {} \n\n Hora: {}:{}'.format(row['Fecha'],row['Hora'],row['Minuto']), 'type': 'markdown'},
-            'Terminal 5':{'value': 'Terminal 5 \n\n Fecha: {} \n\n Hora: {}:{}'.format(row['Fecha'],row['Hora'],row['Minuto']), 'type': 'markdown'},
-            'Terminal 6':{'value': 'Terminal 6 \n\n Fecha: {} \n\n Hora: {}:{}'.format(row['Fecha'],row['Hora'],row['Minuto']), 'type': 'markdown'},
+            'Terminal1':{'value': 'Terminal1 \n\n Fecha: {} \n\n Hora: {}:{}'.format(row['Fecha'],row['Hora'],row['Minuto']), 'type': 'markdown'},
+            'Terminal2':{'value': 'Terminal2 \n\n Fecha: {} \n\n Hora: {}:{}'.format(row['Fecha'],row['Hora'],row['Minuto']), 'type': 'markdown'},
+            'Terminal3':{'value': 'Terminal3 \n\n Fecha: {} \n\n Hora: {}:{}'.format(row['Fecha'],row['Hora'],row['Minuto']), 'type': 'markdown'},
+            'Terminal4':{'value': 'Terminal4 \n\n Fecha: {} \n\n Hora: {}:{}'.format(row['Fecha'],row['Hora'],row['Minuto']), 'type': 'markdown'},
+            'Terminal5':{'value': 'Terminal5 \n\n Fecha: {} \n\n Hora: {}:{}'.format(row['Fecha'],row['Hora'],row['Minuto']), 'type': 'markdown'},
+            'Terminal6':{'value': 'Terminal6 \n\n Fecha: {} \n\n Hora: {}:{}'.format(row['Fecha'],row['Hora'],row['Minuto']), 'type': 'markdown'},
         } for row in df.to_dict('rows')],
         style_table={'height': '750px', 'overflowX': 'scroll'},
         style_cell={
@@ -62,5 +62,10 @@ layout = html.Div(
 
         sort_action='native',
         sort_mode='multi'
-    )
-)
+    ),
+    dcc.Interval(
+            id='interval-component',
+            interval=1*1000, # in milliseconds
+            n_intervals=0
+        )
+])

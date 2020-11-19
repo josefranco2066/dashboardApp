@@ -17,11 +17,11 @@ df1 = transforms.df1
 min_h=df1.Hora.min()
 max_h=df1.Hora.max()
 
-columnas = ['Terminal 1', 'Terminal 2', 'Terminal 3',
-            'Terminal 4', 'Terminal 5', 'Terminal 6']
+columnas = ['Terminal1', 'Terminal2', 'Terminal3',
+            'Terminal4', 'Terminal5', 'Terminal6']
 
 layout = html.Div([
-    html.H1('Wine Dash')
+    html.H1('MIO Dash')
     ,dbc.Row([dbc.Col(
         html.Div([
          html.H2('Filters')
@@ -71,6 +71,10 @@ layout = html.Div([
                         multi=True
                     )  
         ])
+        ,html.Div([
+            dbc.Button("Agregar datos",id="add-data", color="Danger", className="mr-1")
+            ,html.Div(id='otro') 
+        ])
 
         ], style={'marginBottom': 50, 'marginTop': 25, 'marginLeft':15, 'marginRight':15}
         )#end div
@@ -79,8 +83,8 @@ layout = html.Div([
     ,dbc.Col(html.Div([
             dcc.Tabs(id="tabs", value='tab-4', children=[
                     dcc.Tab(label='Tabla Registros', value='tab-4'),
-                    dcc.Tab(label='Scatter Plot', value='tab-2'),
-                    dcc.Tab(label='Heatmap Plot', value='tab-3'),
+                    dcc.Tab(label='Grafico de lineas', value='tab-2'),
+                    dcc.Tab(label='Grafico de barras', value='tab-3'),
                     
                 ])
             , html.Div(id='tabs-content')
@@ -94,3 +98,31 @@ layout = html.Div([
     [dash.dependencies.Input('Horas', 'value')])
 def update_output(value):
     return 'Entre {} y {}'.format(value[0],value[1])
+
+@app.callback(
+    Output("otro", "children"), 
+    [Input("add-data", "n_clicks")],prevent_initial_call=True
+)
+def on_button_click(n):
+    from datetime import datetime
+    from database.transforms import db
+    from index import update_table
+    import random
+    hoy = datetime.today()
+    id = '{m}-{d}-{y} {h}:{M}'.format(
+        y=hoy.strftime('%Y'),
+        m=hoy.strftime('%m'),
+        d=hoy.strftime('%d'),
+        h=hoy.strftime('%H'),
+        M=hoy.strftime('%M')
+        )
+    doc_ref = db.collection('Registros').document(id)
+    doc_ref.set({
+        'Terminal1':random.randrange(10, 100),
+        'Terminal2':random.randrange(50, 100),
+        'Terminal3':random.randrange(80, 120),
+        'Terminal4':random.randrange(90, 100),
+        'Terminal5':random.randrange(10, 500),
+        'Terminal6':random.randrange(250, 450),
+    })
+    return 'Enviados'
