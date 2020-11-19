@@ -74,4 +74,4 @@ def update_table(page_current, page_size, horas, fechaInicio, fechaFin, h, sitio
     return [dff1.iloc[page * size: (page + 1) * size].to_dict('records'),newColumns]
 
 if __name__ == '__main__':
-    app.run_server(host = '0.0.0.0')
+    app.run_server(host = '0.0.0.0',port=8050)

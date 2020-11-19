@@ -20,4 +20,4 @@ sudo apt-get install -y docker-ce docker-ce-cli containerd.io
 
 
 sudo docker build -t jose/dashapp .
-
+sudo docker run --name dashapp -d -p 80:80 jose/dashapp:latest
